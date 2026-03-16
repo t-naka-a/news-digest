@@ -1,23 +1,88 @@
 keywords:
+  # 自社・競合
   - ArkEdge
-  - VDES
-  - IoT
-  - RF
-  - Defense
-  - 安全保障
-  - 防衛
   - Hawkeye 360
   - HawkEye360
   - Unseenlabs
-  - maritime
-  - satellite
+
+  # 技術
+  - VDES
+  - IoT
+  - RF
   - spectrum
+  - propulsion
+  - in-orbit servicing
+  - autonomy
+  - AI for space
+
+  # 宇宙ビジネス
+  - commercial space
+  - launch market
+  - LEO economy
+  - space infrastructure
+  - new space
+  - space supply chain
+  - launch cadence
+  - satellite constellation
+  - space logistics
+  - launch economics
+  - maritime
+
+  # DeepTech / 投資
+  - DeepTech
+  - hard tech
+  - frontier tech
+  - industrial renaissance
+  - venture scale
+  - capital intensity
+  - deep industrials
+
+  # 安全保障・政策
+  - Defense
+  - space domain awareness
+  - national security space
+  - dual-use technology
+  - space force
+  - industrial policy
+  - strategic autonomy
+  - space sovereignty
+  - 安全保障
+  - 防衛
 
 sources:
+  # 宇宙産業メディア
   - name: SpaceNews
     rss_url: https://spacenews.com/feed/
-  - name: Payload
+  - name: Payload Space
     rss_url: https://payloadspace.com/feed/
+  - name: Ars Technica Space
+    rss_url: https://feeds.arstechnica.com/arstechnica/space
+  - name: Parabolic Arc
+    rss_url: http://parabolicarc.com/feed/
+
+  # DeepTech / VC
+  - name: TechCrunch
+    rss_url: https://techcrunch.com/feed/
+  - name: Not Boring
+    rss_url: https://www.notboring.co/feed
+  - name: No Mercy No Malice
+    rss_url: https://www.profgalloway.com/feed/
+  - name: Works in Progress
+    rss_url: https://worksinprogress.co/feed/
+
+  # 宇宙政策・安全保障
+  - name: Defense News
+    rss_url: https://www.defensenews.com/arc/outboundfeeds/rss/
+  - name: Breaking Defense
+    rss_url: https://breakingdefense.com/feed/
+
+  # 技術トレンド
+  - name: MIT Technology Review
+    rss_url: https://www.technologyreview.com/feed/
+  - name: IEEE Spectrum
+    rss_url: https://spectrum.ieee.org/feeds/feed.rss
+
+  # 日本語
   - name: 日経
     rss_url: https://www.nikkei.com/rss/
 
