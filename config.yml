@@ -1,0 +1,15 @@
+keywords:
+  - VDES
+  - RF
+  - Defense
+
+sources:
+  - name: SpaceNews
+    rss_url: https://spacenews.com/feed/
+  - name: Payload
+    rss_url: https://payloadspace.com/feed/
+  - name: 日経
+    rss_url: https://www.nikkei.com/rss/
+
+email:
+  subject_prefix: "[News Digest]"
