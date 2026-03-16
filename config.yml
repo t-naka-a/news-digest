@@ -1,53 +1,107 @@
 keywords:
-  # 自社・競合
-  - ArkEdge
-  - Hawkeye 360
-  - HawkEye360
-  - Unseenlabs
+  # 1. マクロ / 未来予測
+  - space economy
+  - commercial space industry
+  - new space industry
+  - space infrastructure
+  - orbital economy
+  - space industrial base
+  - space supply chain
+  - space logistics
+  - space manufacturing
+  - space commercialization
+  - future of space industry
+  - space market forecast
+  - space industry trends
+  - 宇宙経済
+  - 宇宙産業
+  - 宇宙インフラ
 
-  # 技術
+  # 2. 市場 / ビジネス分析
+  - satellite market
+  - satellite constellation
+  - satellite data market
+  - launch services market
+  - space infrastructure market
+  - space logistics market
+  - space startup funding
+  - space venture capital
+  - space industry report
+  - space market analysis
+  - 衛星市場
+  - 宇宙スタートアップ
+
+  # 3. 競合 / 技術（RF × maritime × security）
+  - RF geolocation satellite
+  - satellite RF sensing
+  - radio frequency intelligence satellite
+  - satellite spectrum monitoring
+  - RF monitoring satellite
+  - maritime domain awareness satellite
+  - satellite ship detection
+  - AIS satellite
+  - VDES satellite
+  - space-based RF sensing
   - VDES
   - IoT
   - RF
   - spectrum
+  - maritime
+  - 電波
+  - 海洋監視
+
+  # 4. 安全保障 / 国家戦略
+  - space domain awareness
+  - space situational awareness
+  - national security space
+  - military satellite surveillance
+  - space defense
+  - space ISR satellite
+  - ELINT satellite
+  - SIGINT satellite
+  - space force
+  - space defense budget
+  - dual-use technology
+  - strategic autonomy
+  - space sovereignty
+  - industrial policy
+  - 安全保障
+  - 防衛
+  - 宇宙安全保障
+  - 防衛宇宙
+
+  # 5. DeepTech / 投資
+  - deeptech startup
+  - hard tech startup
+  - frontier tech
+  - industrial renaissance
+  - deeptech venture capital
+  - space technology investment
+  - capital intensive startup
+  - venture scale
+  - deep industrials
+  - DeepTech
+  - 宇宙投資
+  - 宇宙ベンチャー
+
+  # 6. 企業 / 競合
+  - ArkEdge Space
+  - ArkEdge
+  - HawkEye 360
+  - HawkEye360
+  - Unseenlabs
+  - RF geolocation satellite company
+  - satellite RF intelligence company
+
+  # 技術トレンド
   - propulsion
   - in-orbit servicing
   - autonomy
   - AI for space
-
-  # 宇宙ビジネス
-  - commercial space
   - launch market
   - LEO economy
-  - space infrastructure
-  - new space
-  - space supply chain
   - launch cadence
-  - satellite constellation
-  - space logistics
   - launch economics
-  - maritime
-
-  # DeepTech / 投資
-  - DeepTech
-  - hard tech
-  - frontier tech
-  - industrial renaissance
-  - venture scale
-  - capital intensity
-  - deep industrials
-
-  # 安全保障・政策
-  - Defense
-  - space domain awareness
-  - national security space
-  - dual-use technology
-  - space force
-  - industrial policy
-  - strategic autonomy
-  - space sovereignty
-  - 安全保障
-  - 防衛
 
 sources:
   # 宇宙産業メディア
