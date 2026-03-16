@@ -1,10 +1,12 @@
 import os
+import json
 import smtplib
 import feedparser
 import yaml
 from datetime import datetime, timezone, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from pathlib import Path
 import anthropic
 
 # --- 設定読み込み ---
@@ -21,7 +23,30 @@ GMAIL_APP_PASSWORD = os.environ["GMAIL_APP_PASSWORD"]
 TO_EMAIL = os.environ["TO_EMAIL"]
 
 JST = timezone(timedelta(hours=9))
+SEEN_FILE = "seen_articles.json"
+SEEN_EXPIRE_DAYS = 7
 
+
+# --- 送信済み記事管理 ---
+
+def load_seen_urls():
+    """送信済みURLを読み込む（7日以内のみ保持）"""
+    if not Path(SEEN_FILE).exists():
+        return {}
+    with open(SEEN_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    cutoff = datetime.now(timezone.utc) - timedelta(days=SEEN_EXPIRE_DAYS)
+    return {url: ts for url, ts in data.items()
+            if datetime.fromisoformat(ts) > cutoff}
+
+
+def save_seen_urls(seen: dict):
+    """送信済みURLを保存"""
+    with open(SEEN_FILE, "w", encoding="utf-8") as f:
+        json.dump(seen, f, indent=2, ensure_ascii=False)
+
+
+# --- RSS取得 ---
 
 def is_recent(entry, hours=12):
     """直近 hours 時間以内の記事かどうか判定"""
@@ -31,13 +56,16 @@ def is_recent(entry, hours=12):
     return True  # 日時不明の場合は含める
 
 
-def fetch_articles():
-    """RSSから記事を取得し、キーワードでフィルタリング"""
+def fetch_articles(seen_urls: dict):
+    """RSSから記事を取得し、キーワードでフィルタリング＆重複除外"""
     matched = []
     for source in SOURCES:
         feed = feedparser.parse(source["rss_url"])
         for entry in feed.entries:
             if not is_recent(entry):
+                continue
+            link = entry.get("link", "")
+            if link in seen_urls:
                 continue
             title = entry.get("title", "")
             summary = entry.get("summary", "")
@@ -46,11 +74,13 @@ def fetch_articles():
                 matched.append({
                     "source": source["name"],
                     "title": title,
-                    "link": entry.get("link", ""),
+                    "link": link,
                     "summary": summary,
                 })
     return matched
 
+
+# --- Claude 要約 ---
 
 PROMPT_TEMPLATE = """次のニュースを要約してください。
 
@@ -94,7 +124,6 @@ PROMPT_TEMPLATE = """次のニュースを要約してください。
 """
 
 ENGLISH_SECTION = """📚 英語学習ピックアップ
-（この記事が英語の場合のみ出力。日本語記事はこのセクションを省略）
 
 専門用語（この記事に登場する業界・技術用語）
 例：
@@ -109,7 +138,7 @@ ENGLISH_SECTION = """📚 英語学習ピックアップ
 
 
 def summarize_articles(articles):
-    """Claude API で記事を要約"""
+    """Claude API で記事ごとに構造化要約"""
     if not articles:
         return "該当する記事は見つかりませんでした。"
 
@@ -132,6 +161,8 @@ def summarize_articles(articles):
     return "\n\n".join(results)
 
 
+# --- メール送信 ---
+
 def send_email(subject, body):
     """Gmail で送信"""
     msg = MIMEMultipart("alternative")
@@ -146,18 +177,31 @@ def send_email(subject, body):
         server.sendmail(GMAIL_ADDRESS, TO_EMAIL, msg.as_string())
 
 
+# --- メイン ---
+
 def main():
     now_jst = datetime.now(JST).strftime("%Y-%m-%d %H:%M")
     print(f"[{now_jst} JST] ニュース取得開始")
 
-    articles = fetch_articles()
-    print(f"  マッチした記事数: {len(articles)}")
+    seen_urls = load_seen_urls()
+    print(f"  送信済み記事数（過去{SEEN_EXPIRE_DAYS}日）: {len(seen_urls)}")
+
+    articles = fetch_articles(seen_urls)
+    print(f"  新着マッチ記事数: {len(articles)}")
 
     summary = summarize_articles(articles)
 
     subject = f"{SUBJECT_PREFIX} {now_jst} JST"
     send_email(subject, summary)
     print("  メール送信完了")
+
+    # 送信済みURLを記録・保存
+    now_utc = datetime.now(timezone.utc).isoformat()
+    for a in articles:
+        if a["link"]:
+            seen_urls[a["link"]] = now_utc
+    save_seen_urls(seen_urls)
+    print(f"  送信済みURL記録: {len(articles)}件追加")
 
 
 if __name__ == "__main__":
