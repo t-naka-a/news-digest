@@ -56,9 +56,7 @@ sources:
   - name: Payload Space
     rss_url: https://payloadspace.com/feed/
   - name: Ars Technica Space
-    rss_url: https://feeds.arstechnica.com/arstechnica/space
-  - name: Parabolic Arc
-    rss_url: http://parabolicarc.com/feed/
+    rss_url: https://arstechnica.com/space/feed/
 
   # DeepTech / VC
   - name: TechCrunch
@@ -68,7 +66,7 @@ sources:
   - name: No Mercy No Malice
     rss_url: https://www.profgalloway.com/feed/
   - name: Works in Progress
-    rss_url: https://worksinprogress.co/feed/
+    rss_url: https://worksinprogress.co/rss.xml
 
   # 宇宙政策・安全保障
   - name: Defense News
@@ -83,8 +81,12 @@ sources:
     rss_url: https://spectrum.ieee.org/feeds/feed.rss
 
   # 日本語
-  - name: 日経
-    rss_url: https://www.nikkei.com/rss/
+  - name: 日経クロステック
+    rss_url: https://xtech.nikkei.com/rss/index.rdf
+  - name: sorae（宇宙・科学）
+    rss_url: https://sorae.info/feed
+  - name: JAXA新着情報
+    rss_url: https://www.jaxa.jp/rss/press_j.rdf
 
 email:
   subject_prefix: "[News Digest]"
