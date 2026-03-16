@@ -156,7 +156,7 @@ def summarize_articles(articles):
             max_tokens=2048,
             messages=[{"role": "user", "content": prompt}],
         )
-        results.append(f"{'='*60}\n【記事 {i}】{a['source']} - {a['title']}\n{'='*60}\n{message.content[0].text}")
+        results.append(f"{'='*60}\n【記事 {i}】{a['source']} - {a['title']}\n{a['link']}\n{'='*60}\n{message.content[0].text}")
 
     return "\n\n".join(results)
 
