@@ -71,6 +71,8 @@ PROMPT_TEMPLATE = """次のニュースを要約してください。
 今後の影響
 （社会・経済・企業などへの影響）
 
+{english_section}
+
 【追加ルール】
 - 事実ベースのみで回答する
 - 推測や意見は書かない
@@ -91,6 +93,20 @@ PROMPT_TEMPLATE = """次のニュースを要約してください。
 >>>
 """
 
+ENGLISH_SECTION = """📚 英語学習ピックアップ
+（この記事が英語の場合のみ出力。日本語記事はこのセクションを省略）
+
+専門用語（この記事に登場する業界・技術用語）
+例：
+  - spectrum allocation（スペクトラム割り当て）：電波の周波数帯を各用途に割り振ること
+  - maritime domain awareness（海洋領域認識）：海上の状況を包括的に把握する能力
+
+ネイティブがよく使うフレーズ（記事中の自然な英語表現）
+例：
+  - "ramp up"（急拡大する）：We expect demand to ramp up significantly.
+  - "in the pipeline"（準備中・計画中）：Several new satellites are in the pipeline.
+"""
+
 
 def summarize_articles(articles):
     """Claude API で記事を要約"""
@@ -102,7 +118,9 @@ def summarize_articles(articles):
 
     for i, a in enumerate(articles, 1):
         article_text = f"ソース: {a['source']}\nタイトル: {a['title']}\n本文: {a['summary']}\nURL: {a['link']}"
-        prompt = PROMPT_TEMPLATE.format(article_text=article_text)
+        is_english = not any("\u3000" <= c <= "\u9fff" for c in a["title"] + a["summary"])
+        english_section = ENGLISH_SECTION if is_english else ""
+        prompt = PROMPT_TEMPLATE.format(article_text=article_text, english_section=english_section)
 
         message = client.messages.create(
             model="claude-sonnet-4-6",
