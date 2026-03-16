@@ -52,34 +52,66 @@ def fetch_articles():
     return matched
 
 
+PROMPT_TEMPLATE = """次のニュースを要約してください。
+
+【出力形式】
+
+一言要約（20文字以内）
+
+要約（3行）
+
+重要ポイント（3つ）
+・ポイント1
+・ポイント2
+・ポイント3
+
+背景
+（このニュースの背景や文脈を簡潔に説明）
+
+今後の影響
+（社会・経済・企業などへの影響）
+
+【追加ルール】
+- 事実ベースのみで回答する
+- 推測や意見は書かない
+- 不明な情報は「不明」と明記する
+- ハルシネーション（存在しない事実・人物・企業）を生成しない
+- 記事内に登場する人物・企業・組織名があればGoogle検索リンクを以下形式で付ける
+  例：
+  OpenAI
+  https://www.google.com/search?q=OpenAI
+
+  Sam Altman
+  https://www.google.com/search?q=Sam+Altman
+
+【記事】
+
+<<<
+{article_text}
+>>>
+"""
+
+
 def summarize_articles(articles):
     """Claude API で記事を要約"""
     if not articles:
         return "該当する記事は見つかりませんでした。"
 
     client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+    results = []
 
-    articles_text = ""
     for i, a in enumerate(articles, 1):
-        articles_text += f"\n【{i}】{a['source']} - {a['title']}\n{a['summary']}\nURL: {a['link']}\n"
+        article_text = f"ソース: {a['source']}\nタイトル: {a['title']}\n本文: {a['summary']}\nURL: {a['link']}"
+        prompt = PROMPT_TEMPLATE.format(article_text=article_text)
 
-    prompt = f"""以下のニュース記事を日本語で簡潔に要約してください。
-各記事について以下の形式でまとめてください：
+        message = client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=2048,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        results.append(f"{'='*60}\n【記事 {i}】{a['source']} - {a['title']}\n{'='*60}\n{message.content[0].text}")
 
-・タイトル（英語の場合は日本語訳も）
-・要点（2〜3文）
-・URL
-
-記事一覧：
-{articles_text}
-"""
-
-    message = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=2048,
-        messages=[{"role": "user", "content": prompt}],
-    )
-    return message.content[0].text
+    return "\n\n".join(results)
 
 
 def send_email(subject, body):
